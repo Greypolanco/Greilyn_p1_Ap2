@@ -43,10 +43,15 @@ fun DivisorScreen(viewModel: DivisorViewModel = hiltViewModel()){
         Text(text = "Aprende a Dividir")
 
         OutlinedTextField(value = viewModel.nombre, onValueChange = {
-            
-        }, modifier = Modifier.fillMaxSize(),
-            label = { Text(text = "Nombre")})
-        /*Row (
+            viewModel.nombre = it },
+            label = { Text(text = "Nombre")},
+            singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next))
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(2.dp)
+        ){
             OutlinedTextField(value = viewModel.dividendo.toString(), onValueChange = {
                 val valor = it.toIntOrNull()
                 if(valor != null){
@@ -54,11 +59,9 @@ fun DivisorScreen(viewModel: DivisorViewModel = hiltViewModel()){
             }, modifier = Modifier.fillMaxSize(),
                 label = { Text(text = "Dividendo")},
                 singleLine = true,
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next
-                )
-
-
-        )*/
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+            )
+        }
         OutlinedButton(onClick = {
             keyBoardControlle?.hide()
             if(viewModel.Validar()){
