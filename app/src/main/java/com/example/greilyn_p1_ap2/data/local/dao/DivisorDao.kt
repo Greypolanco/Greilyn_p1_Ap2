@@ -15,7 +15,7 @@ interface DivisorDao {
     @Delete
     suspend fun deleted(divisor: Divisor)
 
-    @Query("SELECT * FROM Divisor WHERE divisorId= :id")
+    @Query("SELECT * FROM Divisor WHERE divisorId= :id LIMIT 1")
     suspend fun find(id : Int): Divisor?
 
     @Query("SELECT * FROM Divisor ORDER BY nombre")
