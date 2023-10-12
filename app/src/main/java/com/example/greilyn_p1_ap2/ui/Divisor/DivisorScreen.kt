@@ -25,11 +25,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.greilyn_p1_ap2.data.local.entity.Divisor
 
@@ -49,41 +51,66 @@ fun DivisorScreen(viewModel: DivisorViewModel = hiltViewModel()){
             viewModel.nombre = it },
             label = { Text(text = "Nombre")},
             singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next))
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+        )
+        if(viewModel.nombreInValido == false){
+            Text(text = "Nombre es Requerido", color = Color.Red, fontSize = 12.sp)
+        }
         Spacer(modifier = Modifier.padding(top = 8.dp))
 
         Row {
-            //Dividendo
-            OutlinedTextField(
-                value = viewModel.dividendo.toString(),onValueChange = {
-                    val nuevo = it.toIntOrNull()
-                    if (nuevo != null) {
-                        viewModel.dividendo = nuevo
-                    } },
-                label = { Text(text = "Dividendo")},
-                modifier = Modifier.weight(1f),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Number
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp)
+
+            ){
+                //Dividendo
+                OutlinedTextField(
+                    value = viewModel.dividendo.toString(),onValueChange = {
+                        val nuevo = it.toIntOrNull()
+                        if (nuevo != null) {
+                            viewModel.dividendo = nuevo
+                        } },
+                    label = { Text(text = "Dividendo")},
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Next,
+                        keyboardType = KeyboardType.Number
+                    )
                 )
-            )
+                if(viewModel.dividendoInValido == false){
+                    Text(text = "Dividendo Requerido", color = Color.Red, fontSize = 12.sp)
+                }
+            }
+
             Spacer(modifier = Modifier.width(12.dp))
-            //Divisor
-            OutlinedTextField(
-                value = viewModel.divisor.toString(),onValueChange = {
-                    val nuevo = it.toIntOrNull()
-                    if (nuevo != null) {
-                        viewModel.divisor = nuevo
-                    } },
-                label = { Text(text = "Divisor")},
-                modifier = Modifier.weight(1f),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Number
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp)
+
+            ){
+                //Divisor
+                OutlinedTextField(
+                    value = viewModel.divisor.toString(),onValueChange = {
+                        val nuevo = it.toIntOrNull()
+                        if (nuevo != null) {
+                            viewModel.divisor = nuevo
+                        } },
+                    label = { Text(text = "Divisor")},
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Next,
+                        keyboardType = KeyboardType.Number
+                    )
                 )
-            )
+                if(viewModel.divisorInValido == false){
+                    Text(text = "Divisor Requerido", color = Color.Red, fontSize = 12.sp)
+                }
+            }
+
         }
 
         Row {
@@ -107,8 +134,13 @@ fun DivisorScreen(viewModel: DivisorViewModel = hiltViewModel()){
                         imeAction = ImeAction.Next,
                         keyboardType = KeyboardType.Number
                     )
-                    
                 )
+                if(viewModel.cocienteInValido == false){
+                    Text(text = "Cociente Requerido", color = Color.Red, fontSize = 12.sp)
+                }
+                if(viewModel.cocienteValido == false){
+                    Text(text = "Cociente Invalido", color = Color.Red, fontSize = 12.sp)
+                }
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column (
@@ -131,6 +163,12 @@ fun DivisorScreen(viewModel: DivisorViewModel = hiltViewModel()){
                         keyboardType = KeyboardType.Number
                     )
                 )
+                if(viewModel.residuoInValido == false){
+                    Text(text = "Residuo Requerido", color = Color.Red, fontSize = 12.sp)
+                }
+                if(viewModel.residuoValido == false){
+                    Text(text = "Residuo Invalido", color = Color.Red, fontSize = 12.sp)
+                }
             }
         }
 
