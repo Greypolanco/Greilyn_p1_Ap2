@@ -1,5 +1,7 @@
 package com.example.greilyn_p1_ap2.ui.Divisor
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,10 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -182,22 +187,47 @@ fun DivisorScreen(viewModel: DivisorViewModel = hiltViewModel()){
             Text(text = "Guardar")
         }
         Spacer(modifier = Modifier.width(12.dp))
-        ConsultaDivisor(divisor = divisores)
+        ConsultaDivisor(divisor = divisores, viewModel)
     }
 }
 
 @Composable
-fun ConsultaDivisor(divisor: List<Divisor>){
+fun ConsultaDivisor(divisor: List<Divisor> ,viewModel: DivisorViewModel){
     Text(text = "Historial De Resultado", style = MaterialTheme.typography.titleMedium)
     LazyColumn( modifier = Modifier.fillMaxWidth()){
         items(divisor){
             divisor ->
-            Text(text = divisor.nombre)
-            Text(text = divisor.dividendo.toString())
-            Text(text = divisor.divisor.toString())
-            Text(text = divisor.cociente.toString())
-            Text(text = divisor.residuo.toString())
-            
+            Column(
+                modifier = Modifier
+                    .padding(13.dp)
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = Color.Black,
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                    .padding(13.dp)
+            ){
+                Text(text ="Nombre:" + divisor.nombre)
+                Text(text = "Dividendo:" + divisor.dividendo.toString())
+                Text(text = "Divisor:"+ divisor.divisor.toString())
+                Text(text = "Cociente:" + divisor.cociente.toString())
+                Text(text = "Residuo:" + divisor.residuo.toString())
+
+                Button(
+                    onClick = { viewModel.deleteDivisor(divisor) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(13.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Eliminar")
+                }
+
+            }
+
         }
     }
 
