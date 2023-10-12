@@ -60,17 +60,9 @@ class DivisorViewModel @Inject constructor(
         }
     }
 
-    fun deleteDivisor(){
+    fun deleteDivisor(divisor: Divisor) {
         viewModelScope.launch {
-            var divisorObj = Divisor(
-                nombre = nombre,
-                divisor = divisor,
-                cociente = cociente,
-                residuo = residuo,
-                dividendo = dividendo
-            )
-            divisorRepository.deletedDivisor(divisorObj)
-            clean()
+            divisorRepository.deletedDivisor(divisor)
         }
     }
 
