@@ -23,7 +23,7 @@ object AppModule {
             "DataBase.db"
         ).fallbackToDestructiveMigration().build()
 
-    @Singleton
+
     @Provides
     fun providesDivisor(db : DataBase) = db.divisorDao()
 }
