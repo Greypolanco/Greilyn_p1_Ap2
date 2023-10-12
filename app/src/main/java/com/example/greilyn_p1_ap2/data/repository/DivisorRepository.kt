@@ -8,6 +8,7 @@ class DivisorRepository @Inject constructor(
     private val divisorDao: DivisorDao
 ) {
     suspend fun saveDivisor(divisor: Divisor) = divisorDao.save(divisor)
+    suspend fun deletedDivisor(divisor: Divisor) = divisorDao.deleted(divisor)
     suspend fun  findDivisor(id : Int) = divisorDao.find(id)
     fun getALlDivisor() = divisorDao.getAll()
 }
