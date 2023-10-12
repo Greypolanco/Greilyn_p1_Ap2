@@ -21,10 +21,22 @@ class DivisorViewModel @Inject constructor(
 ): ViewModel() {
 
     var nombre by mutableStateOf("")
-    val divisor by mutableStateOf(0)
-    val cociente by mutableStateOf(0)
-    val residuo by mutableStateOf(0)
+    var divisor by mutableStateOf(0)
+    var cociente by mutableStateOf(0)
+    var residuo by mutableStateOf(0)
     var dividendo by mutableStateOf(0)
+
+    //validar si esta vacio o no
+    var nombreInValido by mutableStateOf(true)
+    var divisorInValido by mutableStateOf(true)
+    var cocienteInValido by mutableStateOf(true)
+    var residuoInValido by mutableStateOf(true)
+    var dividendoInValido by mutableStateOf(true)
+
+
+    var divisionValida by mutableStateOf(true)
+    var cocienteValido by mutableStateOf(true)
+    var residuoValido by mutableStateOf(true)
 
     val divisorob: StateFlow<List<Divisor>> = divisorRepository.getALlDivisor().stateIn(
         scope = viewModelScope,
@@ -48,17 +60,47 @@ class DivisorViewModel @Inject constructor(
         }
     }
 
+    fun deleteDivisor(){
+        viewModelScope.launch {
+            var divisorObj = Divisor(
+                nombre = nombre,
+                divisor = divisor,
+                cociente = cociente,
+                residuo = residuo,
+                dividendo = dividendo
+            )
+            divisorRepository.deletedDivisor(divisorObj)
+            clean()
+        }
+    }
+
     fun clean() {
         nombre = ""
-
-
+        divisor = 0
+        dividendo = 0
+        cociente = 0
+        residuo = 0
     }
     fun Validar(): Boolean{
-        return !(nombre.isBlank() ||
-                divisor.equals(0) ||
-                cociente.equals(0)||
-                residuo.equals(0) ||
-                dividendo.equals(0))
+        nombreInValido = nombre != ""
+
+        dividendoInValido = dividendo > 0
+
+        divisorInValido = divisor > 0
+
+        cocienteInValido = cociente > 0
+
+        residuoInValido = residuo >= 0
+
+        divisionValida = dividendo == cociente * divisor + residuo // division valida
+
+        cocienteValido = dividendo/divisor == cociente
+
+        residuoValido = dividendo % divisor == residuo
+
+
+        return !(nombre =="" || divisor==0 || cociente==0 || dividendo==0 || !divisionValida)
     }
+
 
 }
