@@ -2,6 +2,7 @@ package com.example.greilyn_p1_ap2.ui.Divisor
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -47,20 +48,26 @@ fun DivisorScreen(viewModel: DivisorViewModel = hiltViewModel()){
             label = { Text(text = "Nombre")},
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next))
+        Spacer(modifier = Modifier.padding(top = 8.dp))
         Row (
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(2.dp)
         ){
+
+
             OutlinedTextField(value = viewModel.dividendo.toString(), onValueChange = {
                 val valor = it.toIntOrNull()
                 if(valor != null){
                     viewModel.dividendo = valor }
-            }, modifier = Modifier.fillMaxSize(),
+            },
                 label = { Text(text = "Dividendo")},
                 singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
             )
+
+
+
         }
         OutlinedButton(onClick = {
             keyBoardControlle?.hide()
@@ -71,7 +78,7 @@ fun DivisorScreen(viewModel: DivisorViewModel = hiltViewModel()){
             Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "Guardar")
             Text(text = "Guardar")
         }
-        ConsultaDivisor(divisor = divisores)
+        //ConsultaDivisor(divisor = divisores)
     }
 }
 
