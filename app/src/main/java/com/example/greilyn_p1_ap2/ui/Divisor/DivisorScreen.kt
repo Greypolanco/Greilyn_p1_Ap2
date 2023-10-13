@@ -102,7 +102,6 @@ fun DivisorScreen(viewModel: DivisorViewModel = hiltViewModel()){
                     value = viewModel.divisor.toString(),
                     onValueChange = {
                         viewModel.divisor = it.toIntOrNull() ?: 0
-                        viewModel.divisorInValido = true
                     },
                     label = { Text(text = "Divisor")},
                     singleLine = true,
