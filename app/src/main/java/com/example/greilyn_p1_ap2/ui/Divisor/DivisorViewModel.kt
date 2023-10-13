@@ -53,7 +53,7 @@ class DivisorViewModel @Inject constructor(
                 residuo = residuo,
                 dividendo = dividendo
             )
-            if(Validar()){
+            if(validar()){
                 divisorRepository.saveDivisor(divisorObj)
                 clean()
             }
@@ -72,27 +72,49 @@ class DivisorViewModel @Inject constructor(
         dividendo = 0
         cociente = 0
         residuo = 0
+        nombreInValido = true
+        divisorInValido = true
+        cocienteInValido = true
+        residuoInValido = true
+        dividendoInValido = true
     }
-    fun Validar(): Boolean{
-        nombreInValido = nombre != ""
+    fun validar(): Boolean{
+        if(!camposNoVaciosValidos()) {
+            return false
+        }
 
-        dividendoInValido = dividendo > 0
+            divisionValida = dividendo == cociente * divisor + residuo // division valida
 
-        divisorInValido = divisor > 0
+            cocienteValido = dividendo/divisor == cociente
 
-        cocienteInValido = cociente > 0
+            residuoValido = dividendo % divisor == residuo
 
-        residuoInValido = residuo >= 0
+            return divisionValida
 
-        divisionValida = dividendo == cociente * divisor + residuo // division valida
-
-        cocienteValido = dividendo/divisor == cociente
-
-        residuoValido = dividendo % divisor == residuo
-
-
-        return !(nombre =="" || divisor==0 || cociente==0 || dividendo==0 || !divisionValida)
     }
-
-
+    private fun camposNoVaciosValidos(): Boolean{
+        if(nombre.isBlank()) {
+            nombreInValido = false
+            return nombreInValido
+        }
+        else if(dividendo <= 0){
+            dividendoInValido= false
+            return dividendoInValido
+        }
+        else if(divisor <= 0){
+            divisorInValido = false
+            return dividendoInValido
+        }
+        else if(cociente <= 0){
+            divisorInValido = false
+            return cocienteInValido
+        }
+        else if(residuo < 0){
+            divisorInValido = false
+            return residuoInValido
+        }
+        else{
+            return true
+        }
+    }
 }
