@@ -93,6 +93,12 @@ class DivisorViewModel @Inject constructor(
 
     }
     private fun camposNoVaciosValidos(): Boolean{
+        if(divisor <= 0){
+            divisorInValido = false
+            return false
+        }else
+            divisorInValido =true
+
         if(nombre.isBlank()) {
             nombreInValido = false
             return nombreInValido
