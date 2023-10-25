@@ -1,40 +1,44 @@
 package com.example.greilyn_p1_ap2.ui.Divisor
 
-
-import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -186,50 +190,84 @@ fun DivisorScreen(viewModel: DivisorViewModel = hiltViewModel()){
             Text(text = "Guardar")
         }
         Spacer(modifier = Modifier.width(12.dp))
-        ConsultaDivisor(divisor = divisores, viewModel)
+        consultaDivisor(divisor = divisores, viewModel)
+    }
+}
+
+
+
+@Composable
+fun consultaDivisor(divisor: List<Divisor> ,viewModel: DivisorViewModel) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Row {
+            Text(text = "Historial De Resultados", style = MaterialTheme.typography.titleMedium)
+            Icon(imageVector = Icons.Filled.Info, contentDescription = "Info icon")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            items(divisor) { divisor ->
+                ItemConsulta(divisor)
+            }
+        }
     }
 }
 
 @Composable
-fun ConsultaDivisor(divisor: List<Divisor> ,viewModel: DivisorViewModel){
-    Text(text = "Historial De Resultado", style = MaterialTheme.typography.titleMedium)
-    LazyColumn( modifier = Modifier.fillMaxWidth()){
-        items(divisor){
-            divisor ->
-            Column(
-                modifier = Modifier
-                    .padding(13.dp)
-                    .fillMaxWidth()
-                    .border(
-                        width = 1.dp,
-                        color = Color.Black,
-                        shape = RoundedCornerShape(10.dp)
-                    )
-                    .padding(13.dp)
-            ){
-                Text(text ="Nombre:" + divisor.nombre)
-                Text(text = "Dividendo:" + divisor.dividendo.toString())
-                Text(text = "Divisor:"+ divisor.divisor.toString())
-                Text(text = "Cociente:" + divisor.cociente.toString())
-                Text(text = "Residuo:" + divisor.residuo.toString())
+fun ItemConsulta(divisor: Divisor, viewModel: DivisorViewModel = hiltViewModel()) {
+    Divider(Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterStart),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
 
-                Button(
-                    onClick = { viewModel.deleteDivisor(divisor) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(13.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        contentColor = Color.White
-                    )
-                ) {
-                    Text(text = "Eliminar")
-                }
-
+        ) {
+            //Nombre
+            Text(text = "${divisor.nombre}")
+            //Dividendo y Divisor
+            Row {
+                Text(text = "Dividendo: ${divisor.dividendo}")
+                Spacer(modifier = Modifier.width(30.dp))
+                Text(text = "Divisor: ${divisor.divisor}")
             }
-
+            // Cociente y Residuo
+            Row {
+                Text(text = "Cociente: ${divisor.cociente}")
+                Spacer(modifier = Modifier.width(30.dp))
+                Text(text = "Residuo: ${divisor.residuo}")
+            }
+        }
+        //Delete
+        Column(
+            modifier = Modifier.align(Alignment.TopEnd)
+        ) {
+            Text(
+                text = "Delete",
+                modifier = Modifier.padding(8.dp),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Button(
+                onClick = {
+                    viewModel.deleteDivisor(divisor)
+                }
+            ) {
+                Icon(imageVector = Icons.Default.Clear, contentDescription = "")
+            }
         }
     }
-
+    Spacer(modifier = Modifier.height(16.dp))
 }
-
-
